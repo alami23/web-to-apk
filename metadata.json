@@ -1,0 +1,6 @@
+{
+  "name": "Web to Android APK Builder",
+  "description": "Convert any website URL into a fully customizable Android application and downloadable APK package with custom permissions, icons, splash screens, and native WebView controls.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
