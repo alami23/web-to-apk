@@ -22,6 +22,9 @@ import {
   ExternalLink,
   Layers,
   Play,
+  Maximize2,
+  Minimize2,
+  Tv,
 } from 'lucide-react';
 import { AppConfig, IconShape } from '@/types/app-config';
 import { PRESET_ICONS } from '@/lib/presets';
@@ -32,9 +35,11 @@ interface PhoneSimulatorProps {
 }
 
 type SimulatorView = 'webview' | 'splash' | 'homescreen' | 'permissions' | 'offline';
+type SimulatorScale = 'compact' | 'standard' | 'large';
 
 export const PhoneSimulator: React.FC<PhoneSimulatorProps> = ({ config }) => {
   const [activeView, setActiveView] = React.useState<SimulatorView>('webview');
+  const [simulatorScale, setSimulatorScale] = React.useState<SimulatorScale>('standard');
   const [isSimulatedOffline, setIsSimulatedOffline] = React.useState(false);
   const [isRefreshing, setIsRefreshing] = React.useState(false);
   const [splashKey, setSplashKey] = React.useState(0);
@@ -127,83 +132,132 @@ export const PhoneSimulator: React.FC<PhoneSimulatorProps> = ({ config }) => {
 
   const isLightIcons = config.styling.statusBarStyle === 'light';
 
+  const shellDimensions =
+    simulatorScale === 'compact'
+      ? 'h-[630px] w-[320px]'
+      : simulatorScale === 'large'
+      ? 'h-[740px] w-[390px] sm:w-[410px]'
+      : 'h-[680px] w-[350px] sm:w-[365px]';
+
   return (
-    <div className="flex flex-col items-center">
-      {/* Simulator Mode Tabs */}
-      <div className="mb-4 flex flex-wrap items-center justify-center gap-1 rounded-xl bg-slate-100 p-1 border border-slate-200/60">
-        <button
-          type="button"
-          onClick={() => setActiveView('webview')}
-          className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
-            activeView === 'webview'
-              ? 'bg-white text-indigo-600 shadow-xs font-bold'
-              : 'text-slate-600 hover:text-slate-900'
-          }`}
-        >
-          <Smartphone className="h-3.5 w-3.5" />
-          WebView App
-        </button>
+    <div className="flex flex-col items-center w-full">
+      {/* Simulator Mode & Scale Toolbar */}
+      <div className="mb-4 flex flex-wrap items-center justify-between w-full gap-2">
+        <div className="flex flex-wrap items-center gap-1 rounded-xl bg-slate-100 p-1 border border-slate-200/60">
+          <button
+            type="button"
+            id="sim-tab-webview"
+            onClick={() => setActiveView('webview')}
+            className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-semibold transition ${
+              activeView === 'webview'
+                ? 'bg-white text-indigo-600 shadow-xs font-bold'
+                : 'text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            <Smartphone className="h-3.5 w-3.5" />
+            WebView
+          </button>
 
-        <button
-          type="button"
-          onClick={replaySplash}
-          className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
-            activeView === 'splash'
-              ? 'bg-white text-indigo-600 shadow-xs font-bold'
-              : 'text-slate-600 hover:text-slate-900'
-          }`}
-        >
-          <Sparkles className="h-3.5 w-3.5" />
-          Splash Screen
-        </button>
+          <button
+            type="button"
+            id="sim-tab-splash"
+            onClick={replaySplash}
+            className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-semibold transition ${
+              activeView === 'splash'
+                ? 'bg-white text-indigo-600 shadow-xs font-bold'
+                : 'text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            <Sparkles className="h-3.5 w-3.5" />
+            Splash
+          </button>
 
-        <button
-          type="button"
-          onClick={() => setActiveView('homescreen')}
-          className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
-            activeView === 'homescreen'
-              ? 'bg-white text-indigo-600 shadow-xs font-bold'
-              : 'text-slate-600 hover:text-slate-900'
-          }`}
-        >
-          <Home className="h-3.5 w-3.5" />
-          Home Launcher
-        </button>
+          <button
+            type="button"
+            id="sim-tab-homescreen"
+            onClick={() => setActiveView('homescreen')}
+            className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-semibold transition ${
+              activeView === 'homescreen'
+                ? 'bg-white text-indigo-600 shadow-xs font-bold'
+                : 'text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            <Home className="h-3.5 w-3.5" />
+            Launcher
+          </button>
 
-        <button
-          type="button"
-          onClick={() => setActiveView('permissions')}
-          className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
-            activeView === 'permissions'
-              ? 'bg-white text-indigo-600 shadow-xs font-bold'
-              : 'text-slate-600 hover:text-slate-900'
-          }`}
-        >
-          <Shield className="h-3.5 w-3.5" />
-          Permissions UI
-        </button>
+          <button
+            type="button"
+            id="sim-tab-permissions"
+            onClick={() => setActiveView('permissions')}
+            className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-semibold transition ${
+              activeView === 'permissions'
+                ? 'bg-white text-indigo-600 shadow-xs font-bold'
+                : 'text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            <Shield className="h-3.5 w-3.5" />
+            Permissions
+          </button>
 
-        <button
-          type="button"
-          onClick={() => {
-            setActiveView('offline');
-            setIsSimulatedOffline(true);
-          }}
-          className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
-            activeView === 'offline'
-              ? 'bg-white text-indigo-600 shadow-xs font-bold'
-              : 'text-slate-600 hover:text-slate-900'
-          }`}
-        >
-          <WifiOff className="h-3.5 w-3.5" />
-          Offline Page
-        </button>
+          <button
+            type="button"
+            id="sim-tab-offline"
+            onClick={() => {
+              setActiveView('offline');
+              setIsSimulatedOffline(true);
+            }}
+            className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-semibold transition ${
+              activeView === 'offline'
+                ? 'bg-white text-indigo-600 shadow-xs font-bold'
+                : 'text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            <WifiOff className="h-3.5 w-3.5" />
+            Offline
+          </button>
+        </div>
+
+        {/* Viewport Scale Selector */}
+        <div className="flex items-center gap-1 rounded-xl bg-slate-100 p-1 border border-slate-200/60 text-[11px] font-semibold text-slate-600">
+          <span className="px-1 text-[10px] uppercase font-bold text-slate-400">Scale</span>
+          <button
+            type="button"
+            id="btn-scale-compact"
+            onClick={() => setSimulatorScale('compact')}
+            className={`px-2 py-1 rounded-lg transition ${
+              simulatorScale === 'compact' ? 'bg-white text-indigo-600 shadow-xs font-bold' : 'hover:text-slate-900'
+            }`}
+          >
+            Compact
+          </button>
+          <button
+            type="button"
+            id="btn-scale-standard"
+            onClick={() => setSimulatorScale('standard')}
+            className={`px-2 py-1 rounded-lg transition ${
+              simulatorScale === 'standard' ? 'bg-white text-indigo-600 shadow-xs font-bold' : 'hover:text-slate-900'
+            }`}
+          >
+            Standard
+          </button>
+          <button
+            type="button"
+            id="btn-scale-large"
+            onClick={() => setSimulatorScale('large')}
+            className={`px-2 py-1 rounded-lg transition ${
+              simulatorScale === 'large' ? 'bg-white text-indigo-600 shadow-xs font-bold' : 'hover:text-slate-900'
+            }`}
+          >
+            Full Size
+          </button>
+        </div>
       </div>
 
       {/* Simulator Device Shell */}
-      <div className="relative mx-auto flex flex-col items-center">
+      <div className="relative mx-auto flex flex-col items-center transition-all duration-300">
         {/* Android Frame */}
-        <div className="relative h-[660px] w-[340px] rounded-[48px] bg-slate-900 p-3 shadow-2xl ring-12 ring-slate-800/80 sm:w-[350px]">
+        <div className={`relative ${shellDimensions} rounded-[48px] bg-slate-900 p-3 shadow-2xl ring-12 ring-slate-800/80 transition-all duration-300`}>
           {/* Hardware Buttons on sides */}
           <div className="absolute -left-3.5 top-28 h-12 w-1.5 rounded-l-md bg-slate-700" />
           <div className="absolute -left-3.5 top-44 h-12 w-1.5 rounded-l-md bg-slate-700" />

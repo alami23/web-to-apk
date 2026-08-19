@@ -230,10 +230,10 @@ export default function HomePage() {
       />
 
       {/* Main Workspace */}
-      <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-6 sm:px-6">
-        <div className="grid gap-8 lg:grid-cols-12">
+      <main className="w-full flex-1 px-4 py-6 sm:px-8 lg:px-10">
+        <div className="grid gap-8 lg:grid-cols-12 xl:gap-10">
           {/* Left Column: Form & Tabs */}
-          <div className="space-y-6 lg:col-span-7">
+          <div className="space-y-6 lg:col-span-7 xl:col-span-7 2xl:col-span-8">
             {/* Step Navigation Tabs */}
             <div className="grid grid-cols-2 gap-2 rounded-2xl bg-slate-200/70 p-1.5 sm:grid-cols-4 shadow-inner">
               {tabs.map((tab) => {
@@ -338,7 +338,7 @@ export default function HomePage() {
           </div>
 
           {/* Right Column: Live Phone Simulator */}
-          <div className="lg:col-span-5">
+          <div className="lg:col-span-5 xl:col-span-5 2xl:col-span-4">
             <div className="sticky top-20 rounded-3xl border border-slate-200/80 bg-white p-6 shadow-sm">
               <div className="mb-4 flex items-center justify-between">
                 <div>

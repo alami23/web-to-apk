@@ -25,18 +25,18 @@ export const Navbar: React.FC<NavbarProps> = ({
   const fileInputRef = React.useRef<HTMLInputElement>(null);
 
   return (
-    <header className="sticky top-0 z-30 w-full border-b border-slate-200 bg-white">
-      <div className="mx-auto flex max-w-7xl h-16 items-center justify-between px-4 sm:px-8">
+    <header className="sticky top-0 z-30 w-full border-b border-slate-200 bg-white/95 backdrop-blur-sm">
+      <div className="flex w-full h-16 items-center justify-between px-4 sm:px-8 lg:px-10">
         {/* Brand & Logo */}
         <div className="flex items-center space-x-3">
-          <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white shadow-xs">
-            <Smartphone className="h-4 w-4" />
+          <div className="w-9 h-9 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-xs">
+            <Smartphone className="h-5 w-5" />
           </div>
           <div className="flex items-center gap-2.5">
-            <span className="font-bold text-xl tracking-tight text-slate-800">AppForge</span>
-            <span className="hidden sm:inline-flex items-center gap-1 rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-semibold text-slate-600 border border-slate-200">
+            <span className="font-bold text-xl tracking-tight text-slate-900">AppForge</span>
+            <span className="hidden sm:inline-flex items-center gap-1.5 rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-semibold text-indigo-700 border border-indigo-100">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-              Android 14 Ready
+              Android 16 Ready
             </span>
           </div>
         </div>
